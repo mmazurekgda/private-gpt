@@ -3,20 +3,20 @@
 FROM python:3.11.5-slim-bookworm as base
 
 # Install poetry
-RUN pip install pipx
-RUN python3 -m pipx ensurepath
-RUN pipx install poetry==1.8.3
+RUN pip install --no-cache pipx && \
+python3 -m pipx ensurepath && \
+pipx install poetry==1.8.3
 ENV PATH="/root/.local/bin:$PATH"
 ENV PATH=".venv/bin/:$PATH"
 
 # Dependencies to build llama-cpp
-RUN apt update && apt clean -y
-RUN apt install -y \
-    libopenblas-dev\
-    ninja-build\
-    build-essential\
-    pkg-config\
-    wget
+RUN apt update && apt install -y --no-install-recommends \
+libopenblas-dev \
+ninja-build \
+build-essential \
+pkg-config \
+wget && apt clean -y && \
+rm -rf /var/lib/apt/lists/*
 
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
@@ -24,8 +24,11 @@ ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 WORKDIR /private_gpt
 COPY pyproject.toml poetry.lock ./
 
-ARG POETRY_EXTRAS="ui embeddings-huggingface llms-llama-cpp vector-stores-qdrant"
-RUN poetry install --extras "${POETRY_EXTRAS}"
+ARG POETRY_EXTRAS="ui llms-llama-cpp vector-stores-qdrant"
+# embeddings-huggingface llms-llama-cpp vector-stores-qdrant"
+RUN poetry install --no-root --no-cache --extras "${POETRY_EXTRAS}"
+# IMPORTANT: RUN LATER the following dependency
+# docker pip install --no-cache-dir llama-index-embeddings-huggingface==0.2.3
 
-COPY private_gpt ./
-
+COPY private_gpt ./private_gpt/
+RUN rm -rf /root/.cache
