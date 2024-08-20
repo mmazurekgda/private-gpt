@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, DirectoryPath
 
 from private_gpt.settings.settings_loader import load_active_settings
 
@@ -99,9 +99,12 @@ class DataSettings(BaseModel):
         description="Ingestion configuration",
         default_factory=lambda: IngestionSettings(allow_ingest_from=["*"]),
     )
-    local_data_folder: str = Field(
+    # local_data_folder: str = Field(
+    #     description="Path to local storage."
+    #     "It will be treated as an absolute path if it starts with /"
+    # )
+    local_data_folder: DirectoryPath = Field(
         description="Path to local storage."
-        "It will be treated as an absolute path if it starts with /"
     )
 
 
@@ -575,6 +578,17 @@ class MilvusSettings(BaseModel):
         True, description="Overwrite the previous collection schema if it exists."
     )
 
+class PathSettings(BaseModel):
+    models_path: DirectoryPath = Field(
+        description="Path to the models folder.",
+    )
+    models_cache_path: DirectoryPath = Field(
+        description="Path to the models cache folder.",
+    )
+    docs_path: DirectoryPath = Field(
+        description="Path to the docs folder.",
+    )
+
 
 class Settings(BaseModel):
     server: ServerSettings
@@ -597,6 +611,7 @@ class Settings(BaseModel):
     postgres: PostgresSettings | None = None
     clickhouse: ClickHouseSettings | None = None
     milvus: MilvusSettings | None = None
+    paths: PathSettings
 
 
 """
@@ -604,14 +619,14 @@ This is visible just for DI or testing purposes.
 
 Use dependency injection or `settings()` method instead.
 """
-unsafe_settings = load_active_settings()
+# unsafe_settings = load_active_settings()
 
 """
 This is visible just for DI or testing purposes.
 
 Use dependency injection or `settings()` method instead.
 """
-unsafe_typed_settings = Settings(**unsafe_settings)
+unsafe_typed_settings = None
 
 
 def settings() -> Settings:

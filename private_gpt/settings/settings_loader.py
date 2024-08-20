@@ -8,12 +8,14 @@ from typing import Any
 
 from pydantic.v1.utils import deep_update, unique_list
 
-from private_gpt.constants import PROJECT_ROOT_PATH
+# from private_gpt.constants import PROJECT_ROOT_PATH
 from private_gpt.settings.yaml import load_yaml_with_envvars
 
 logger = logging.getLogger(__name__)
 
-_settings_folder = os.environ.get("PGPT_SETTINGS_FOLDER", PROJECT_ROOT_PATH)
+_settings_folder = os.environ.get("PGPT_SETTINGS_FOLDER")
+if not _settings_folder:
+    raise ValueError("PGPT_SETTINGS_FOLDER environment variable is not set")
 
 # if running in unittest, use the test profile
 _test_profile = ["test"] if "tests.fixtures" in sys.modules else []
