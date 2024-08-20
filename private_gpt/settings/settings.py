@@ -625,7 +625,7 @@ class Settings(BaseModel):
     postgres: PostgresSettings | None = None
     clickhouse: ClickHouseSettings | None = None
     milvus: MilvusSettings | None = None
-    paths: PathSettings
+    paths: PathSettings = PathSettings()
 
 
 """
