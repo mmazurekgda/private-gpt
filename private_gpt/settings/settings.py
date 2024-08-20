@@ -95,6 +95,12 @@ class ServerSettings(BaseModel):
 
 
 class DataSettings(BaseModel):
+    model_config = SettingsConfigDict(
+        env_prefix="PRIVATE_GPT_DATA_",
+        extra="deny",
+        case_sensitive=True,
+    )
+
     local_ingestion: IngestionSettings = Field(
         description="Ingestion configuration",
         default_factory=lambda: IngestionSettings(allow_ingest_from=["*"]),
