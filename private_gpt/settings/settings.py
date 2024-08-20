@@ -98,7 +98,7 @@ class ServerSettings(BaseModel):
 class DataSettings(BaseModel):
     model_config = SettingsConfigDict(
         env_prefix="PRIVATE_GPT_DATA_",
-        extra="deny",
+        extra="forbid",
         case_sensitive=True,
     )
 
@@ -589,7 +589,7 @@ class MilvusSettings(BaseModel):
 class PathSettings(BaseModel):
     model_config = SettingsConfigDict(
         env_prefix="PRIVATE_GPT_PATHS_",
-        extra="deny",
+        extra="forbid",
         case_sensitive=True,
     )
 
