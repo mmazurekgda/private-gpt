@@ -11,7 +11,7 @@ on:
 
 
 jobs:
-  docker_kpi_bara:
+  docker:
     env:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository }}
@@ -43,7 +43,7 @@ jobs:
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
         with:
           registry: ghcr.io
-          username: mmazurekgda
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: "Build and push the Docker image"
         uses: docker/build-push-action@v5
