@@ -1,6 +1,7 @@
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, DirectoryPath, SettingsConfigDict
+from pydantic import BaseModel, Field, DirectoryPath
+from pydantic_settings import SettingsConfigDict
 
 from private_gpt.settings.settings_loader import load_active_settings
 
