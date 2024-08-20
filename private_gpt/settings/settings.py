@@ -1,6 +1,6 @@
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, DirectoryPath
+from pydantic import BaseModel, Field, DirectoryPath, SettingsConfigDict
 
 from private_gpt.settings.settings_loader import load_active_settings
 
@@ -578,7 +578,14 @@ class MilvusSettings(BaseModel):
         True, description="Overwrite the previous collection schema if it exists."
     )
 
+
 class PathSettings(BaseModel):
+    model_config = SettingsConfigDict(
+        env_prefix="PRIVATE_GPT_PATHS_",
+        extra="deny",
+        case_sensitive=True,
+    )
+
     models_path: DirectoryPath = Field(
         description="Path to the models folder.",
     )
