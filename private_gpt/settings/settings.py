@@ -1,7 +1,7 @@
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field, DirectoryPath
-from pydantic_settings import SettingsConfigDict
+from pydantic_settings import SettingsConfigDict, BaseSettings
 
 from private_gpt.settings.settings_loader import load_active_settings
 
@@ -95,10 +95,10 @@ class ServerSettings(BaseModel):
     )
 
 
-class DataSettings(BaseModel):
+class DataSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="PRIVATE_GPT_DATA_",
-        extra="forbid",
+        extra="ignore",
         case_sensitive=True,
     )
 
@@ -586,10 +586,10 @@ class MilvusSettings(BaseModel):
     )
 
 
-class PathSettings(BaseModel):
+class PathSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="PRIVATE_GPT_PATHS_",
-        extra="forbid",
+        extra="ignore",
         case_sensitive=True,
     )
 
