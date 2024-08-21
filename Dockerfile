@@ -24,7 +24,7 @@ ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 WORKDIR /private_gpt
 COPY pyproject.toml poetry.lock ./
 
-ARG POETRY_EXTRAS="ui llms-llama-cpp vector-stores-qdrant"
+ARG POETRY_EXTRAS="ui llms-ollama embeddings-ollama vector-stores-qdrant"
 # embeddings-huggingface llms-llama-cpp vector-stores-qdrant"
 RUN poetry install --no-root --no-cache --extras "${POETRY_EXTRAS}"
 # IMPORTANT: RUN LATER the following dependency
